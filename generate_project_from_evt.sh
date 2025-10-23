@@ -4,7 +4,7 @@ PART_LIST="./parts-list.txt"
 
 # if no arg,
 if [ $# -ne 1 ]; then
-  echo "Usage: ./generate_project_from_evt.sh <part>" 
+  echo "Usage: ./generate_project_from_evt.sh <part>"
   echo "please specify a ch32v part:"
   while IFS= read -r line
   do
@@ -85,10 +85,14 @@ elif [[ $PART = ch32v2* ]]; then
   LD_TEMPLATE=Link.ld.template.ch32v2
 elif [[ $PART = ch32v1* ]]; then
   LD_TEMPLATE=Link.ld.template.ch32v1
+elif [[ $PART = ch32v003* ]]; then
+  LD_TEMPLATE=Link.ld.template.ch32v003
 elif [[ $PART = ch32v0* ]]; then
-  LD_TEMPLATE=Link.ld.template.ch32v0
+  LD_TEMPLATE=Link.ld.template.ch32v00x
 elif [[ $PART = ch32x0* ]]; then
   LD_TEMPLATE=Link.ld.template.ch32x0
+elif [[ $PART = ch32m0* ]]; then
+  LD_TEMPLATE=Link.ld.template.ch32v00x
 elif [[ $PART = ch32l1* ]]; then
   LD_TEMPLATE=Link.ld.template.ch32l1
 else
@@ -111,12 +115,19 @@ sed -i "s/STARTUP_ASM_SOURCE_LIST/CH32V_firmware_library\/Startup\/$STARTUP_ASM/
 
 rm -f c_source.list
 
-# special treatment for ch32v003
+sed -i "s/CH32VXXX/$PART/g" Makefile
+
+# special treatment for ch32v00x
 if [[ $PART = ch32v0* ]]; then
  sed -i "s/CPU = -march=rv32imac_zicsr -mabi=ilp32/CPU = -march=rv32ec_zicsr -mabi=ilp32e/g" Makefile
  sed -i "s/CPU = -march=rv32imac -mabi=ilp32/CPU = -march=rv32ec -mabi=ilp32e/g" Makefile
 fi
-sed -i "s/CH32VXXX/$PART/g" Makefile
+
+# special treatment for ch32v3xx
+if [[ $PART = ch32v0* ]]; then
+ sed -i "s/CPU = -march=rv32imac_zicsr -mabi=ilp32/CPU = -march=rv32imafc_zicsr -mabi=ilp32f/g" Makefile
+ sed -i "s/CPU = -march=rv32imac -mabi=ilp32/CPU = -march=rv32imafc -mabi=ilp32f/g" Makefile
+fi
 
 # special treatment for ch32x035
 if [[ $PART = ch32x*  ]]; then
@@ -128,6 +139,12 @@ fi
 if [[ $PART = ch32l*  ]]; then
   mv CH32V_firmware_library CH32L_firmware_library
   sed -i "s/CH32V/CH32L/g" Makefile
+fi
+
+# special treatment for ch32m007
+if [[ $PART = ch32m*  ]]; then
+  mv CH32V_firmware_library CH32M_firmware_library
+  sed -i "s/CH32V/CH32M/g" Makefile
 fi
 
 

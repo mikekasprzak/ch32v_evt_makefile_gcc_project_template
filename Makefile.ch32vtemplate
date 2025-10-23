@@ -35,6 +35,9 @@ STARTUP_ASM_SOURCE_LIST
 #######################################
 PREFIX = riscv-none-elf-
 
+# For MounRiver Toolchain 2.10+
+#PREFIX = riscv-none-embed-
+
 CC = $(PREFIX)gcc
 AS = $(PREFIX)gcc -x assembler-with-cpp
 CP = $(PREFIX)objcopy
@@ -47,16 +50,16 @@ BIN = $(CP) -O binary -S
 # CFLAGS
 #######################################
 # cpu
-CPU = -march=rv32imac_zicsr -mabi=ilp32 -msmall-data-limit=8 
+CPU = -march=rv32imac_zicsr -mabi=ilp32 -msmall-data-limit=8
 
-# For gcc version less than v12
-# CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
+# For gcc version less than v12 (i.e. MounRiver Toolchain)
+#CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
 
 # mcu
 MCU = $(CPU) $(FPU) $(FLOAT-ABI)
 
 # AS includes
-AS_INCLUDES = 
+AS_INCLUDES =
 
 # C includes
 C_INCLUDES =  \
@@ -84,11 +87,11 @@ CFLAGS += $(TARGET_DEFS)
 # LDFLAGS
 #######################################
 # link script
-LDSCRIPT = CH32V_firmware_library/Ld/Link.ld 
+LDSCRIPT = CH32V_firmware_library/Ld/Link.ld
 
 # libraries
 LIBS = -lc -lm -lnosys
-LIBDIR = 
+LIBDIR =
 LDFLAGS = $(MCU) -mno-save-restore -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wunused -Wuninitialized -T $(LDSCRIPT) -nostartfiles -Xlinker --gc-sections -Wl,-Map=$(BUILD_DIR)/$(TARGET).map --specs=nano.specs $(LIBS)
 
 # default action: build all
@@ -118,17 +121,17 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
 
 $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(HEX) $< $@
-	
+
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-	$(BIN) $< $@	
-	
+	$(BIN) $< $@
+
 $(BUILD_DIR):
-	mkdir $@		
+	mkdir $@
 
 #######################################
 # Program
 #######################################
-program: $(BUILD_DIR)/$(TARGET).elf 
+program: $(BUILD_DIR)/$(TARGET).elf
 	sudo wch-openocd -f ./wch-riscv.cfg -c 'init; halt; program $(BUILD_DIR)/$(TARGET).elf verify; reset; wlink_reset_resume; exit;'
 
 isp: $(BUILD_DIR)/$(TARGET).bin
@@ -139,7 +142,7 @@ isp: $(BUILD_DIR)/$(TARGET).bin
 #######################################
 clean:
 	-rm -fR $(BUILD_DIR)
-  
+
 #######################################
 # dependencies
 #######################################
