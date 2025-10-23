@@ -9,7 +9,10 @@ if [ $# -ne 1 ]; then
   while IFS= read -r line
   do
     part=$(echo "$line"|awk -F ' ' '{print $1}'| tr '[:upper:]' '[:lower:]')
-    echo "$part"
+    # Ignore parts beginning with # (i.e. comments)
+    if [[ ! "$part" == "#"* ]]; then
+      echo "$part"
+    fi
   done < "$PART_LIST"
   exit
 fi
