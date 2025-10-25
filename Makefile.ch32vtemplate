@@ -33,10 +33,13 @@ STARTUP_ASM_SOURCE_LIST
 #######################################
 # binaries
 #######################################
+# MounRiver Toolchoin 2.10+
+ifneq ($(shell which riscv-none-embed-gcc),)
+PREFIX = riscv-none-embed-
+# Other
+else
 PREFIX = riscv-none-elf-
-
-# For MounRiver Toolchain 2.10+
-#PREFIX = riscv-none-embed-
+endif
 
 CC = $(PREFIX)gcc
 AS = $(PREFIX)gcc -x assembler-with-cpp
@@ -49,11 +52,13 @@ BIN = $(CP) -O binary -S
 #######################################
 # CFLAGS
 #######################################
-# cpu
+# MounRiver Toolchoin 2.10+
+ifneq ($(shell which riscv-none-embed-gcc),)
+CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
+# Others
+else
 CPU = -march=rv32imac_zicsr -mabi=ilp32 -msmall-data-limit=8
-
-# For gcc version less than v12 (i.e. MounRiver Toolchain)
-#CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
+endif
 
 # mcu
 MCU = $(CPU) $(FPU) $(FLOAT-ABI)
@@ -133,6 +138,9 @@ $(BUILD_DIR):
 #######################################
 program: $(BUILD_DIR)/$(TARGET).elf
 	sudo wch-openocd -f ./wch-riscv.cfg -c 'init; halt; program $(BUILD_DIR)/$(TARGET).elf verify; reset; wlink_reset_resume; exit;'
+
+wlink: $(BUILD_DIR)/$(TARGET).elf
+	wlink flash $(BUILD_DIR)/$(TARGET).bin
 
 isp: $(BUILD_DIR)/$(TARGET).bin
 	wchisp flash $(BUILD_DIR)/$(TARGET).bin
