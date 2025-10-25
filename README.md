@@ -40,7 +40,7 @@ For ease of use, this project bundles the CH32V EVT packages from WCH, including
   + CH32V208CBU6
   + CH32V208RBT6
   + CH32V208WBU6
-- [CH32V307EVT.ZIP](https://www.wch.cn/downloads/CH32V307EVT_ZIP.html) V2.7 2024-11-08
+- [CH32V307EVT.ZIP](https://www.wch.cn/downloads/CH32V307EVT_ZIP.html) V2.9 2025-07-09
   + CH32V303CBT6
   + CH32V303RBT6
   + CH32V303RCT6
