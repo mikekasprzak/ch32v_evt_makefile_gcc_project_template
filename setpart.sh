@@ -4,7 +4,7 @@
 if [ ! -f Makefile ]; then
 	echo "Please run './generate_project_from_evt.sh <part>' first."
   exit
-fi 
+fi
 
 PART_LIST="./parts-list.txt"
 
@@ -122,4 +122,6 @@ fi
 if [[ $PART = ch32l1*  ]]; then
   setpart ch32l1
 fi
+
+echo $PART>part
 

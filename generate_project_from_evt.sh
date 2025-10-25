@@ -50,6 +50,8 @@ echo "Convert project for $PART"
 echo "part : $PART"
 echo "flash size : $FLASHSIZE"
 echo "ram size : $RAMSIZE"
+echo $PART>part
+echo "wrote $PART to part file"
 echo "#########################"
 
 # clean

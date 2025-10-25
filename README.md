@@ -80,12 +80,11 @@ The script will generate or extract the following files:
 /User/*                       # Other files from the `GPIO_Toggle` example
 /Examples/*                   # All other examples found in the EVT package (NOTE: can ignore)
 /CH32V_firmware_library/*     # Support library code for the current part
+/part                         # Text file with the name of the current part
 ```
 
 The basic `GPIO_Toggle` project is now setup, and can be found in the `/User/` folder. You should modify the `User` program to suit your part, 
 if say the default pin used isn't available (i.e. a CH32V002A4M6 doesn't have an exposed D0 pin, so you might choose D4 instead).
-
-NOTE: If you
 
 To build the project, run `make`.
 
