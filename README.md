@@ -1,8 +1,8 @@
 # WCH CH32V EVT with GCC and Makefile support
 
-This is a project template with related tools to convert WCH official CH32V EVT package to a GCC and Makefile project.
+This project will generate a project and GCC Makefile for official WCH EVT packages.
 
-This template will convert the EVT package to a Makefile project and setup Link.ld according to your MCU. It supports the CH32V EVT packages from WCH, including:
+It will extract the EVT packages and setup Link.ld according to your MCU. For ease of use, it bundles the CH32V EVT packages from WCH, including:
 
 - [CH32V003EVT.ZIP](https://www.wch.cn/downloads/CH32V003EVT_ZIP.html) V2.0 2024-10-28
   + CH32V003J4M6
