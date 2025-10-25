@@ -1,8 +1,10 @@
-# WCH CH32V EVT with GCC and Makefile support
+# Standalone GCC Makefile for WCH RISC-V projects
 
-This project will generate a project and GCC Makefile for official WCH EVT packages.
+This project provides an easy way to build projects for the WCH family of RISC-V MCU's without using the MounRiver IDE.
 
-It will extract the EVT packages and setup Link.ld according to your MCU. For ease of use, it bundles the CH32V EVT packages from WCH, including:
+It extracts files from the official WCH EVT sample packages, and sets up Link.ld according to your chosen MCU.
+
+For ease of use, this project bundles the CH32V EVT packages from WCH, including:
 
 - [CH32V003EVT.ZIP](https://www.wch.cn/downloads/CH32V003EVT_ZIP.html) V2.0 2024-10-28
   + CH32V003J4M6
@@ -60,14 +62,14 @@ It will extract the EVT packages and setup Link.ld according to your MCU. For ea
 ## Usage
 
 This script assumes you have the MounRiver `riscv-none-embed-*` or a different `riscv-none-elf-*` toolchain installed and added to your path.
-To generate the gcc/makefile project for a specific part, do the following:
+To generate the gcc+makefile project for a specific part (MCU), do the following:
 
 ```bash
-./generate_project_from_evt.sh <part>
+./generate_project_from_evt.sh <full-part-name>
 ```
-If you want to change to another part from same family after project generated, use `./setpart.sh <part>`.
+If you want to change to another part from same family after project generated, use `./setpart.sh <full-part-name>`.
 
-If you do not know which part you should specify, run `./generate_project_from_evt.sh` without arguments for a list of supported parts.
+If you do not know which part you should specify, run `./generate_project_from_evt.sh` without any arguments for a list of supported parts.
 
 
 The script will generate or extract the following files:
@@ -83,15 +85,20 @@ The script will generate or extract the following files:
 The basic `GPIO_Toggle` project is now setup, and can be found in the `/User/` folder. You should modify the `User` program to suit your part, 
 if say the default pin used isn't available (i.e. a CH32V002A4M6 doesn't have an exposed D0 pin, so you might choose D4 instead).
 
-Then type `make` to build the project.
+NOTE: If you
 
-The `<part>.elf` / `<part>.bin` / `<part>.hex` will be generated at 'build' dir and can be programmed to target device later.
+To build the project, run `make`.
 
-Some helpful flashing commands are available. You can run `make isp` or `make wlink` to program the binary to the attached device, 
-using the `wchisp` and `wlink` tools respectfully. It's assumed you have these tools installed and available in the path.
+```bash
+make
+```
+
+The `<full-part-name>.elf` / `<full-part-name>.bin` / `<full-part-name>.hex` will be generated in `/build/` directory, ready to be programmed to a device.
+
+To do so, you can run `make isp` or `make wlink` to program the binary to the attached device, using the [`wchisp`](https://github.com/ch32-rs/wchisp) and
+[`wlink`](https://github.com/ch32-rs/wlink) tools. We assume you already have these tools installed, and that they're setup correctly (i.e. ISP devices
+in ISP mode, WCH-LinkE has a new enough firmware for your chips, etc).
 
 ## Note
 
 Please refer to [this tutorial](https://github.com/cjacker/opensource-toolchain-ch32v) to setup the ch32v dev environment.
-
-And you must use [this latest WCH OpenOCD](https://github.com/cjacker/wch-openocd).
