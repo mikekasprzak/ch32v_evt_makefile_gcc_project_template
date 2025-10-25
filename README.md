@@ -1,6 +1,6 @@
 # Standalone GCC Makefile for WCH RISC-V projects
 
-This project provides an easy way to build projects for the WCH family of RISC-V MCU's without using the MounRiver IDE.
+This project provides an easy starting point for building projects for the WCH family of RISC-V MCU's without using the MounRiver IDE.
 
 It extracts files from the official WCH EVT sample packages, and sets up Link.ld according to your chosen MCU.
 
