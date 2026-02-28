@@ -2,7 +2,7 @@
 # target
 ######################################
 TARGET = CH32VXXX
-TARGET_DEFS=
+TARGET_DEFS = -DTARGET_PART=$(TARGET)
 
 ######################################
 # building variables
@@ -36,7 +36,9 @@ STARTUP_ASM_SOURCE_LIST
 # MounRiver Toolchoin 2.10+
 ifneq ($(shell which riscv-none-embed-gcc),)
 PREFIX = riscv-none-embed-
-# Other
+# MounRiver Toolchoin 2.30+
+else ifneq ($(shell which riscv-wch-elf-gcc),)
+PREFIX = riscv-wch-elf-
 else
 PREFIX = riscv-none-elf-
 endif
@@ -55,7 +57,9 @@ BIN = $(CP) -O binary -S
 # MounRiver Toolchoin 2.10+
 ifneq ($(shell which riscv-none-embed-gcc),)
 CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
-# Others
+# MounRiver Toolchoin 2.30+
+else ifneq ($(shell which riscv-wch-elf-gcc),)
+CPU = -march=rv32imac -mabi=ilp32 -msmall-data-limit=8
 else
 CPU = -march=rv32imac_zicsr -mabi=ilp32 -msmall-data-limit=8
 endif
